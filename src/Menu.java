@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class Menu extends JFrame {
@@ -41,7 +42,16 @@ public class Menu extends JFrame {
                     "3x4");
            if(!(selection==null)) {
                setVisible(false);
-               JFrame game = new NewGame();
+               JFrame game = new NewGame(selection);
+               game.addWindowListener(new WindowAdapter() {
+                   @Override
+                   public void windowClosed(WindowEvent e) {
+                       super.windowClosed(e);
+                       setVisible(true);
+                       ((NewGame) game).setCompare1("");
+                       ((NewGame) game).setCompare2("");
+                   }
+               });
            }
 
         });
@@ -49,6 +59,18 @@ public class Menu extends JFrame {
         highscore=new JButton("High Scores");
         highscore.setFont(new Font("Serif", Font.PLAIN, 14));
         highscore.setAlignmentX(Component.CENTER_ALIGNMENT);
+        highscore.addActionListener(e -> {
+            JFrame highscore = new HighScore();
+            setVisible(false);
+            highscore.addWindowListener(new WindowAdapter() {
+                @Override
+                public void windowClosed(WindowEvent e) {
+                    super.windowClosed(e);
+                    setVisible(true);
+                }
+            });
+        });
+
         exit=new JButton("EXIT");
         exit.setFont(new Font("Serif", Font.PLAIN, 14));
         exit.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -69,4 +91,6 @@ public class Menu extends JFrame {
         add(panel,BorderLayout.CENTER);
 
     }
+
+
 }
